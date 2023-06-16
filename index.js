@@ -1,3 +1,1 @@
-module.exports = () => {
-  // ...
-};
+console.log("primeros paso node.js")
