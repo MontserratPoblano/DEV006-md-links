@@ -16,3 +16,19 @@ const pathIsAbsolute = (ruta) => {
     }
 }
 
+// const pathAbsolute = pathIsAbsolute()
+//funcion 2 Verificar si es un archivo 
+const pathIsFile = (pathAbsolute) => {
+    return new Promise((resolve, reject) => {
+        fs.stat(pathAbsolute, (error, stats) => {
+            if (error) {
+                reject("Error occurred while checking if it is a file:" + error)
+            } else if (stats.isFile() && path.extname(pathAbsolute) === ".md") {
+                resolve(pathAbsolute)
+            }
+            else {
+                reject("Path is not a Markdownfile or does not exist")
+            }
+        })
+    })
+}
