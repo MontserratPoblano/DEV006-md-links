@@ -2,10 +2,11 @@ const fs = require("fs")
 const path = require("path")
 const markdownIt = require('markdown-it');
 const md = new markdownIt({
-    html:true
+    html: true
 });
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+const axios = require("axios");
 
 const ruta = process.argv[2]
 
@@ -64,26 +65,74 @@ const readFileMd = (pathAbsolute) => {
     })
 }
 
-const readDirectory=()=>{
+const readDirectory = () => {
     return "aun no creo la funcion leer directorio"
 }
 
 
-const getLinksInFile=(fileHtml,pathAbsolute)=>{
-    let linksInfo=[]
-     const dom=new JSDOM(fileHtml)
-    const links=dom.window.document.querySelectorAll("a")
+const getLinksInFile = (fileHtml) => {
+
+    const dom = new JSDOM(fileHtml)
+    const links = dom.window.document.querySelectorAll("a")
     const linkstoArray = Array.from(links);
-    return linkstoArray.map((link)=>{
-        linksInfo.push({
-            href:link.href,
-            text:link.textContent,
-            file:pathAbsolute
-        })
-        return  linksInfo
+    const newArrayUrl = linkstoArray.filter((url) => {
+        const href = url.href
+        return href.startsWith("http://") || href.startsWith("https://")
     })
-   
+    return newArrayUrl
+
 }
+
+const validateIsFalse = (newArrayUrl, pathAbsolute) => {
+
+    return newArrayUrl.map((link) => {
+        return {
+
+            href: link.href,
+            text: link.textContent,
+            file: pathAbsolute
+        }
+    })
+
+}
+
+
+
+
+const validateIsTrue = (newArrayUrl, pathAbsolute) => {
+    const newPromiseArrayUrl=newArrayUrl.map((link)=>{
+        return axios.get(link.href)
+        .then((response)=>{
+            return {
+                href: link.href,
+                text: link.textContent,
+                file: pathAbsolute,
+                statusCode: response.status,
+                ok:response.statusText
+            }
+        })
+        .catch((error)=>{
+            return {
+                href: link.href,
+                text: link.textContent,
+                file: pathAbsolute,
+                statusCode: error.response ? error.response.status : null,
+                ok: error.response ? error.response.statusText : "Fail"
+            }
+        })
+    });
+
+    return Promise.all(newPromiseArrayUrl)
+
+}
+    
+
+            
+        
+
+
+
+
 
 
 
@@ -93,6 +142,9 @@ module.exports = {
     pathIsDirectory,
     readFileMd,
     readDirectory,
-    getLinksInFile
+    getLinksInFile,
+    validateIsFalse,
+    validateIsTrue
+
 }
 
