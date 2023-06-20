@@ -1,10 +1,11 @@
 const { pathIsAbsolute,
   pathIsFile, pathIsDirectory,
   readFileMd,
-  readDirectory,
+  getAllFiles,
   getLinksInFile, 
   validateIsFalse,
-  validateIsTrue} = require(".");
+  validateIsTrue,
+} = require(".");
 
 const ruta2 = process.argv[2]
 const options ={validate:process.argv[3]}
@@ -14,7 +15,9 @@ function mdlinks(ruta2,options) {
   return pathIsDirectory(pathAbsolute)
     .then((isDirectory) => {
       if (isDirectory) {
-        return readDirectory();
+        return getAllFiles(pathAbsolute)
+      
+        
       }
       return pathIsFile(pathAbsolute)
         .then((isFile) => {
@@ -34,6 +37,7 @@ function mdlinks(ruta2,options) {
           })
           }
         })
+      
     });
 }
 
