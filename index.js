@@ -21,6 +21,7 @@ const pathIsAbsolute = (ruta) => {
 }
 
 const pathIsFile = (pathAbsolute) => {
+
     return new Promise((resolve, reject) => {
         fs.stat(pathAbsolute, (error, stats) => {
             if (error) {
@@ -65,10 +66,36 @@ const readFileMd = (pathAbsolute) => {
     })
 }
 
-const readDirectory = () => {
-    return "aun no creo la funcion leer directorio"
+const getAllFiles = (pathAbsolute, arrayOfFiles) => {
+
+    const files = fs.readdirSync(pathAbsolute)
+    arrayOfFiles = arrayOfFiles || []
+    files.forEach((file) => {
+        const fileAbsolute = path.join(pathAbsolute, file)
+        if (fs.statSync(fileAbsolute).isDirectory()) {
+            arrayOfFiles = getAllFiles(fileAbsolute, arrayOfFiles)
+
+        } else if (path.extname(fileAbsolute) === ".md") {
+            arrayOfFiles.push(fileAbsolute)
+        }
+    })
+   
+    return arrayOfFiles
 }
 
+// const getLinksInDirectory = (arrayOfFiles) => {
+//     const getLinksPromises = arrayOfFiles.forEach((file) => {
+//         return readFileMd(file)
+//             .then((result) => {
+//                  return getLinksInFile(result)
+//             })
+
+//     })
+
+
+//     return Promise.all(getLinksPromises)
+
+// }
 
 const getLinksInFile = (fileHtml) => {
 
@@ -100,35 +127,35 @@ const validateIsFalse = (newArrayUrl, pathAbsolute) => {
 
 
 const validateIsTrue = (newArrayUrl, pathAbsolute) => {
-    const newPromiseArrayUrl=newArrayUrl.map((link)=>{
+    const newPromiseArrayUrl = newArrayUrl.map((link) => {
         return axios.get(link.href)
-        .then((response)=>{
-            return {
-                href: link.href,
-                text: link.textContent,
-                file: pathAbsolute,
-                statusCode: response.status,
-                ok:response.statusText
-            }
-        })
-        .catch((error)=>{
-            return {
-                href: link.href,
-                text: link.textContent,
-                file: pathAbsolute,
-                statusCode: error.response ? error.response.status : null,
-                ok: error.response ? error.response.statusText : "Fail"
-            }
-        })
+            .then((response) => {
+                return {
+                    href: link.href,
+                    text: link.textContent,
+                    file: pathAbsolute,
+                    statusCode: response.status,
+                    ok: response.statusText
+                }
+            })
+            .catch((error) => {
+                return {
+                    href: link.href,
+                    text: link.textContent,
+                    file: pathAbsolute,
+                    statusCode: error.response ? error.response.status : null,
+                    ok: error.response ? error.response.statusText : "Fail"
+                }
+            })
     });
 
     return Promise.all(newPromiseArrayUrl)
 
 }
-    
 
-            
-        
+
+
+
 
 
 
@@ -141,10 +168,10 @@ module.exports = {
     pathIsFile,
     pathIsDirectory,
     readFileMd,
-    readDirectory,
+    getAllFiles,
     getLinksInFile,
     validateIsFalse,
-    validateIsTrue
+    validateIsTrue,
 
 }
 
