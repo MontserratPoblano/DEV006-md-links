@@ -79,23 +79,33 @@ const getAllFiles = (pathAbsolute, arrayOfFiles) => {
             arrayOfFiles.push(fileAbsolute)
         }
     })
-   
+
     return arrayOfFiles
 }
 
-// const getLinksInDirectory = (arrayOfFiles) => {
-//     const getLinksPromises = arrayOfFiles.forEach((file) => {
-//         return readFileMd(file)
-//             .then((result) => {
-//                  return getLinksInFile(result)
-//             })
+const getLinksInDirectory = (arrayOfFiles) => {
+    const getLinksPromises = arrayOfFiles.map((file) => {
+        return readFileMd(file)
+            .then((result) => {
+                const getLinks=getLinksInFile(result)
+                 const getLinksWithFile=getLinks.map((link)=>{
+                    return{
+                        link:link,
+                        file:file,
+                    }
+                })
+                return getLinksWithFile
+            })
+    })
+    return Promise.all(getLinksPromises)
+        .then((result) => {
+            
+            return result.flat()
+        })
 
-//     })
+}
 
 
-//     return Promise.all(getLinksPromises)
-
-// }
 
 const getLinksInFile = (fileHtml) => {
 
@@ -106,13 +116,42 @@ const getLinksInFile = (fileHtml) => {
         const href = url.href
         return href.startsWith("http://") || href.startsWith("https://")
     })
+    
     return newArrayUrl
 
 }
+//
+const validateIsFalseDirectory=(arrayLinksDirectory) => {
+    let newArrayOfLinkFalse=[]
+const linksDirectoryFalsePromises= arrayLinksDirectory.map((elemento)=>{
+    
+    const elementoFile=elemento.file
+    newArrayOfLinkFalse.push(elemento.link)
+    return validateIsFalse(newArrayOfLinkFalse,elementoFile)
+})
+return Promise.all(linksDirectoryFalsePromises.flat())
+}
+
+const validateIsTrueDirectory=(arrayLinksDirectory)=>{
+    let newArrayOfLinkTrue=[]
+    const linksDirectoryTruePromises= arrayLinksDirectory.map((elemento)=>{
+        const elementoFile=elemento.file
+        newArrayOfLinkTrue.push(elemento.link)
+        return validateIsTrue(newArrayOfLinkTrue,elementoFile)
+    })
+    return Promise.all(linksDirectoryTruePromises.flat())
+    .then((result)=>{
+        return result.flatMap((array)=>array)
+    })
+    }
+    
+
+
 
 const validateIsFalse = (newArrayUrl, pathAbsolute) => {
 
     return newArrayUrl.map((link) => {
+        console.log(link)
         return {
 
             href: link.href,
@@ -122,8 +161,6 @@ const validateIsFalse = (newArrayUrl, pathAbsolute) => {
     })
 
 }
-
-
 
 
 const validateIsTrue = (newArrayUrl, pathAbsolute) => {
@@ -172,6 +209,9 @@ module.exports = {
     getLinksInFile,
     validateIsFalse,
     validateIsTrue,
+    getLinksInDirectory,
+    validateIsFalseDirectory,
+    validateIsTrueDirectory
 
 }
 
