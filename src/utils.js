@@ -8,8 +8,6 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const axios = require("axios");
 
-const ruta = process.argv[2]
-
 
 const pathIsAbsolute = (ruta) => {
     if (path.isAbsolute(ruta)) {
@@ -87,11 +85,11 @@ const getLinksInDirectory = (arrayOfFiles) => {
     const getLinksPromises = arrayOfFiles.map((file) => {
         return readFileMd(file)
             .then((result) => {
-                const getLinks=getLinksInFile(result)
-                 const getLinksWithFile=getLinks.map((link)=>{
-                    return{
-                        link:link,
-                        file:file,
+                const getLinks = getLinksInFile(result)
+                const getLinksWithFile = getLinks.map((link) => {
+                    return {
+                        link: link,
+                        file: file,
                     }
                 })
                 return getLinksWithFile
@@ -99,7 +97,7 @@ const getLinksInDirectory = (arrayOfFiles) => {
     })
     return Promise.all(getLinksPromises)
         .then((result) => {
-            
+
             return result.flat()
         })
 
@@ -116,42 +114,59 @@ const getLinksInFile = (fileHtml) => {
         const href = url.href
         return href.startsWith("http://") || href.startsWith("https://")
     })
-    
+
     return newArrayUrl
 
 }
-//
-const validateIsFalseDirectory=(arrayLinksDirectory) => {
-    let newArrayOfLinkFalse=[]
-const linksDirectoryFalsePromises= arrayLinksDirectory.map((elemento)=>{
-    
-    const elementoFile=elemento.file
-    newArrayOfLinkFalse.push(elemento.link)
-    return validateIsFalse(newArrayOfLinkFalse,elementoFile)
-})
-return Promise.all(linksDirectoryFalsePromises.flat())
+
+const validateIsFalseDirectory = (arrayLinksDirectory) => {
+  
+    const promises = arrayLinksDirectory.map((elemento) => {
+        const elementoFile = elemento.file
+        
+        return validateIsFalse([elemento.link], elementoFile)
+    })
+    return Promise.all(promises.flat())
 }
 
-const validateIsTrueDirectory=(arrayLinksDirectory)=>{
-    let newArrayOfLinkTrue=[]
-    const linksDirectoryTruePromises= arrayLinksDirectory.map((elemento)=>{
-        const elementoFile=elemento.file
-        newArrayOfLinkTrue.push(elemento.link)
-        return validateIsTrue(newArrayOfLinkTrue,elementoFile)
+
+// const validateIsFalseDirectory = (arrayLinksDirectory) => {
+//     const linksWithFalseStatus = new Set();
+//     const promises = arrayLinksDirectory.map((elemento) => {
+//       const elementoFile = elemento.file;
+//       const link = elemento.link;
+//       if (!linksWithFalseStatus.has(link)) {
+//         linksWithFalseStatus.add(link);
+//         return validateIsFalse([link], elementoFile);
+//       }
+//       return Promise.resolve(null);
+//     });
+//     return Promise.all(promises).then((results) =>
+//       results.filter((result) => result !== null).flat()
+//     );
+//   };
+
+
+const validateIsTrueDirectory = (arrayLinksDirectory) => {
+   
+    const promisesD = arrayLinksDirectory.map((elemento) => {
+        const elementoFile = elemento.file
+       
+        return validateIsTrue([elemento.link], elementoFile)
     })
-    return Promise.all(linksDirectoryTruePromises.flat())
-    .then((result)=>{
-        return result.flatMap((array)=>array)
-    })
-    }
-    
+    return Promise.all(promisesD.flat())
+        .then((result) => {
+            return result.flatMap((array) => array)
+        })
+}
+
 
 
 
 const validateIsFalse = (newArrayUrl, pathAbsolute) => {
 
     return newArrayUrl.map((link) => {
-        console.log(link)
+
         return {
 
             href: link.href,
@@ -190,6 +205,24 @@ const validateIsTrue = (newArrayUrl, pathAbsolute) => {
 
 }
 
+const linksUnique = (array) => {
+    const unique = array.reduce((acc, item) => {
+        if (!acc.includes(item.href)) {
+            acc.push(item.href)
+        }
+        return acc
+    }, [])
+
+    return unique.length
+}
+
+const linksBroken=(array)=>{
+    const broken=array.filter((link)=>link.ok !=="OK")
+    return broken.length
+}
+
+
+
 
 
 
@@ -211,7 +244,8 @@ module.exports = {
     validateIsTrue,
     getLinksInDirectory,
     validateIsFalseDirectory,
-    validateIsTrueDirectory
-
+    validateIsTrueDirectory,
+    linksUnique,
+    linksBroken
 }
 
