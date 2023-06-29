@@ -16,13 +16,12 @@ const { pathIsAbsolute,
 const mdLinks=(ruta,options)=> {
   const pathAbsolute = pathIsAbsolute(ruta);
   const validate=options && options.validate
-  return pathIsDirectory(pathAbsolute)
+  return new Promise((resolve,reject)=>{
+  pathIsDirectory(pathAbsolute)
     .then((isDirectory) => {
       if (isDirectory) {
         return Promise.resolve(getAllFiles(pathAbsolute))
-          .then((result) => {
-            return getLinksInDirectory(result)
-          })
+          .then((result) => getLinksInDirectory(result))
           .then((arrayLinksDirectory) => {
             if (!validate) {
               return validateIsFalseDirectory(arrayLinksDirectory)
@@ -32,32 +31,30 @@ const mdLinks=(ruta,options)=> {
               throw new Error("Invalidate value for options enter false or true")
             }
           })
-      }
+      }else{
       return pathIsFile(pathAbsolute)
         .then((isFile) => {
           if (isFile) {
             return readFileMd(pathAbsolute)
-              .then((fileHtml) => {
-                return getLinksInFile(fileHtml)
-              }).then((arrayLinks) => {
+              .then((fileHtml) => getLinksInFile(fileHtml))
+              .then((arrayLinks) => {
                 if (!validate) {
                   return validateIsFalse(arrayLinks, pathAbsolute)
                 } else if (validate) {
                   return validateIsTrue(arrayLinks, pathAbsolute)
-                    .then((responsePage) => {
-                      return responsePage
-                    })
                 } else {
                   throw new Error("Invalid value for options enter false or true")
                 }
               })
+          }else{
+            throw new Error("The specified path does not exist or is neither a file nor a directory")
           }
         })
-
+      }
     })
-    .catch((error) => {
-      return error
-    })
+    .then((result)=>resolve((result)))
+    .catch((error) => reject((error)))
+})
 }
 
 
