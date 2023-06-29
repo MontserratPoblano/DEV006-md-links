@@ -8,9 +8,9 @@ const { pathIsAbsolute,
   getLinksInDirectory,
   validateIsFalseDirectory,
   validateIsTrueDirectory,
-} = require("./utils");
+} = require("./index.js");
 
-const ruta = process.argv[2]
+
 
 
 const mdLinks=(ruta,options)=> {
@@ -61,16 +61,6 @@ const mdLinks=(ruta,options)=> {
 }
 
 
-
-// mdLinks(ruta,{validate:true})
-//   .then((links) => {
-//     console.log(links)
-//     return links.href
-//   })
-//   .catch((error) => {
-//     console.log(error)
-//     return error
-//   })
 
 module.exports = mdLinks
 

@@ -1,6 +1,19 @@
 {
   "name": "md-links",
   "version": "0.1.0",
+  "description": "Retrieves links in markdown files,including directories. Provides total,unique and broken links",
+  "main": "./src/index.js",
+  "bin":{
+    "md-links":"./bin/cli.js"
+  },
+  "scripts": {
+    "api":"node src/mdLinks.js",
+    "start": "node prueba.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MontserratPoblano/DEV006-md-links"
+  },
   "engines": {
     "node": ">=16.x"
   },
@@ -16,5 +29,10 @@
     "figlet": "^1.6.0",
     "jsdom": "^22.1.0",
     "markdown-it": "^13.0.1"
-  }
+  },
+  "keywords": [
+    "CLI"
+  ],
+  "author": "Montserrat Poblano",
+  "license": "ISC"
 }
