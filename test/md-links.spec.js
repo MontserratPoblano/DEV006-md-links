@@ -1,10 +1,10 @@
-const mdLinks = require('../');
+const mdLinks= require("./mdLinks.js")
 
 
-describe('mdLinks', () => {
+// describe(, () => {
 
-  it('should...', () => {
-    console.log('FIX ME!');
-  });
+//   it('it should be a function', () => {
+//     console.log('FIX ME!');
+//   });
 
-});
+// });
