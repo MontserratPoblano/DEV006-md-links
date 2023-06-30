@@ -24,13 +24,16 @@ const pathIsFile = (pathAbsolute) => {
         fs.stat(pathAbsolute, (error, stats) => {
             if (error) {
                 reject("Error occurred while checking if it is a file:" + error)
-                return
-            } if (stats.isFile() && path.extname(pathAbsolute) === ".md") {
-                resolve(stats.isFile())
-            }
-            else {
-                reject("Path is not a Markdownfile or does not exist")
-                return
+                return;
+
+            } else {
+                if (stats.isFile() && path.extname(pathAbsolute) === ".md") {
+                    resolve(true)
+                }
+                else {
+                    reject("Path is not a Markdownfile or does not exist")
+
+                }
             }
         })
     })
@@ -98,8 +101,8 @@ const getLinksInDirectory = (arrayOfFiles) => {
     return Promise.all(getLinksPromises)
         .then((result) => {
 
-            const links=result.flat()
-            if(links.length===0){
+            const links = result.flat()
+            if (links.length === 0) {
                 throw new Error("Not links found in directory")
             }
 
@@ -125,10 +128,10 @@ const getLinksInFile = (fileHtml) => {
 }
 
 const validateIsFalseDirectory = (arrayLinksDirectory) => {
-  
+
     const promises = arrayLinksDirectory.map((elemento) => {
         const elementoFile = elemento.file
-        
+
         return validateIsFalse([elemento.link], elementoFile)
     })
     return Promise.all(promises.flat())
@@ -137,10 +140,10 @@ const validateIsFalseDirectory = (arrayLinksDirectory) => {
 
 
 const validateIsTrueDirectory = (arrayLinksDirectory) => {
-   
+
     const promisesD = arrayLinksDirectory.map((elemento) => {
         const elementoFile = elemento.file
-       
+
         return validateIsTrue([elemento.link], elementoFile)
     })
     return Promise.all(promisesD.flat())
@@ -219,6 +222,6 @@ module.exports = {
     getLinksInDirectory,
     validateIsFalseDirectory,
     validateIsTrueDirectory,
-   
+
 }
 
