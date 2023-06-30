@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "description": "Retrieves links in markdown files,including directories. Provides total,unique and broken links",
   "main": "./src/index.js",
-  "bin":{
-    "md-links":"./bin/cli.js"
+  "bin": {
+    "md-links": "./bin/cli.js"
   },
   "scripts": {
-    "api":"node src/mdLinks.js",
-    "start": "node prueba.js"
+    "api": "node src/mdLinks.js",
+    "start": "node prueba.js",
+    "test":"jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,8 @@
     "CLI"
   ],
   "author": "Montserrat Poblano",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
 }
