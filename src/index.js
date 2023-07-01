@@ -67,22 +67,25 @@ const readFileMd = (pathAbsolute) => {
     })
 }
 
-const getAllFiles = (pathAbsolute, arrayOfFiles) => {
+const getAllFiles = (pathAbsolute) => {
 
     const files = fs.readdirSync(pathAbsolute)
 
-    arrayOfFiles = arrayOfFiles || []
-    files.forEach((file) => {
+    return files.flatMap((file) => {
         const fileAbsolute = path.join(pathAbsolute, file)
-        if (fs.statSync(fileAbsolute).isDirectory()) {
-            arrayOfFiles = getAllFiles(fileAbsolute, arrayOfFiles)
-
-        } else if (path.extname(fileAbsolute) === ".md") {
-            arrayOfFiles.push(fileAbsolute)
+        if (!fs.statSync(fileAbsolute).isDirectory()) {
+            if(path.extname(fileAbsolute) === ".md"){
+                return fileAbsolute
+            }
+        }else{
+            return getAllFiles(fileAbsolute)
         }
+        return []
     })
-    return arrayOfFiles
+    
 }
+
+
 
 const getLinksInDirectory = (arrayOfFiles) => {
     const getLinksPromises = arrayOfFiles.map((file) => {
@@ -105,10 +108,8 @@ const getLinksInDirectory = (arrayOfFiles) => {
             if (links.length === 0) {
                 throw new Error("Not links found in directory")
             }
-
             return links
         })
-
 }
 
 
@@ -122,7 +123,6 @@ const getLinksInFile = (fileHtml) => {
         const href = url.href
         return href.startsWith("http://") || href.startsWith("https://")
     })
-
     return newArrayUrl
 
 }
@@ -134,7 +134,8 @@ const validateIsFalseDirectory = (arrayLinksDirectory) => {
 
         return validateIsFalse([elemento.link], elementoFile)
     })
-    return Promise.all(promises.flat())
+    return Promise.all(promises)
+    .then((result)=>result.flat())
 }
 
 
@@ -146,9 +147,9 @@ const validateIsTrueDirectory = (arrayLinksDirectory) => {
 
         return validateIsTrue([elemento.link], elementoFile)
     })
-    return Promise.all(promisesD.flat())
+    return Promise.all(promisesD)
         .then((result) => {
-            return result.flatMap((array) => array)
+            return result.flat()
         })
 }
 
@@ -156,13 +157,13 @@ const validateIsTrueDirectory = (arrayLinksDirectory) => {
 
 
 const validateIsFalse = (newArrayUrl, pathAbsolute) => {
-
+    
     return newArrayUrl.map((link) => {
 
         return {
 
             href: link.href,
-            text: link.textContent,
+            text: link.text,
             file: pathAbsolute
         }
     })

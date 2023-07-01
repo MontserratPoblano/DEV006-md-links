@@ -1,9 +1,11 @@
+const { pathIsDirectory, pathIsFile } = require("../src/index");
 const mdLinks = require("../src/mdLinks");
 
 // const fs=require("fs")
 // const path=require("path")
 jest.mock("fs");
 jest.mock("path")
+
 
 
 
@@ -26,9 +28,12 @@ describe("function mdLinks", () => {
                 file: 'C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\prueba2.md',
             }
         ])
-    });
-
+    });     
 });
+
+
+
+
 
 describe("function mdLinks if add a value to option", () => {
 
@@ -60,6 +65,4 @@ describe("function mdLinks if add a value to option", () => {
             }
         ])
     });
-
-});
-
+})
