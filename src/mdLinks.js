@@ -17,7 +17,7 @@ const mdLinks=(ruta,options)=> {
   const pathAbsolute = pathIsAbsolute(ruta);
   const validate=options && options.validate
   return new Promise((resolve,reject)=>{
-  pathIsDirectory(pathAbsolute)
+  return pathIsDirectory(pathAbsolute)
     .then((isDirectory) => {
       if (isDirectory) {
         return Promise.resolve(getAllFiles(pathAbsolute))
@@ -32,7 +32,7 @@ const mdLinks=(ruta,options)=> {
             }
           })
       }else{
-      return pathIsFile(pathAbsolute)
+       return pathIsFile(pathAbsolute)
         .then((isFile) => {
           if (isFile) {
             return readFileMd(pathAbsolute)
