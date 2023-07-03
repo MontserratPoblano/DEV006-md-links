@@ -3,8 +3,8 @@ const { pathIsAbsolute, pathIsFile, pathIsDirectory, readFileMd, getAllFiles, ge
 
 
 describe("pathIsAbsolute function", () => {
-    const pathRelative = ".\\test\\archivo1.md"
-    const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\archivo1.md"
+    const pathRelative = ".\\Modulo_prueba\\archivo1.md"
+    const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\Modulo_prueba\\archivo1.md"
     it("should return a path absolute if parameter is a relative path", () => {
         const absolute1 = pathIsAbsolute(pathRelative)
         expect(absolute1).toBe(pathAbsolute)
@@ -18,12 +18,12 @@ describe("pathIsAbsolute function", () => {
 describe("pathIsFile function", () => {
 
     it("should return true if path is a file and has .md extension", () => {
-        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\src\\test.md"
+        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba\\test.md"
         return expect(pathIsFile(pathAbsolute)).resolves.toBe(true);
     })
 
     it("shoud return an error if path is a file but not has .md extension", () => {
-        const pathAbsoluteWithoutMd = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\src\\test.png"
+        const pathAbsoluteWithoutMd = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba\\test.png"
         // console.log(pathIsFile(pathAbsoluteWithoutMd));
         return pathIsFile(pathAbsoluteWithoutMd).catch((error) => {
             // console.log(data);
@@ -62,7 +62,7 @@ describe("pathIsDirectory function", () => {
 
 describe("readFile function", () => {
     it("should return a html file", () => {
-        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\src\\test.md"
+        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba\\test.md"
         return expect(readFileMd(pathAbsolute)).resolves.toContain('<p>herramienta usando <a href="https://nodejs.org/">Node.js</a></p>')
     })
     it("should return a error if path not exist", () => {
@@ -77,10 +77,11 @@ describe("getAllFiles function", () => {
     it("should return an array of files with .md extension from directories", () => {
         const outPut =
             [
-                'C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\moduloprueba\\prueba4.md',
-                'C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\moduloprueba\\subcarpetamoduloprueba\\prueba7.md'
+                'C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba\\archivo1.md',
+                'C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba\\carpetaprueba\\carpeta2\\archivo2.md',
+                'C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba\\test.md'
             ]
-        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\moduloprueba"
+        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\Modulo_prueba"
         const prueba = getAllFiles(pathAbsolute)
         expect(prueba).toEqual(outPut)
 
@@ -139,8 +140,3 @@ describe("validateIsFalse function", () => {
     })
 })
 
-describe("validateIsFalseDirectory funtion",()=>{
-    it("Should return an array of objects with href,text and path from directory",()=>{
-        
-    })
-})
