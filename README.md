@@ -11,20 +11,20 @@ MD-LINKS es una librería de línea de comando diseñada para facilitar la obten
 
 
 ## Tabla de contenido
->
+
  [1. Instalación](#instalación)
->
+
  [2. Guía de uso](#guía-de-uso)
->
+
  [3. Ejemplos](#ejemplos)
->
+
  [4. Implementación](#implementación)
->   
+  
 - [4.1. Backlog](#backlog)
 - [4.1. Diagramas de flujo](#diagrama-de-flujo)
->
+
  [5. Autor](#autor)
->
+
 
 
 
@@ -33,7 +33,7 @@ MD-LINKS es una librería de línea de comando diseñada para facilitar la obten
 
 Sigue los pasos a continuación para instalar la CLI en tu sistema:
 1. Abre una terminal o línea de comandos.
-2. Ejecuta el siguiente comando para instalar la CLI utilizando npm.
+2. Ejecuta el siguiente comando para instalar la CLI utilizando npm: ``npm i md-links-christianmontserrat``
 3. Puedes verificar que se ha instalando correctamente ejecutando el siguiente comando: 
 
 
