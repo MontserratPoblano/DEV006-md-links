@@ -12,15 +12,18 @@ MD-LINKS es una librería de línea de comando diseñada para facilitar la obten
 
 ## Tabla de contenido
 >
-* [1. Instalación](#instalación)
+ [1. Instalación](#instalación)
 >
-* [2. Guía de uso](#guía-de-uso)
+ [2. Guía de uso](#guía-de-uso)
 >
-* [3. Ejemplos](#ejemplos)
+ [3. Ejemplos](#ejemplos)
 >
-* [4. Diagramas de flujo](#diagrama-de-flujo)
+ [4. Implementación](#implementación)
+>   
+- [4.1. Backlog](#backlog)
+- [4.1. Diagramas de flujo](#diagrama-de-flujo)
 >
-* [5. Autor](#autor)
+ [5. Autor](#autor)
 >
 
 
@@ -39,8 +42,6 @@ Sigue los pasos a continuación para instalar la CLI en tu sistema:
 
  md-links **`<path-to-file>`** [options]
  
-
- ---
 
  **Uso basico**
 
@@ -82,5 +83,55 @@ Si necesitas obtener información adicional sobre como utilizar la CLI ``md-link
 md-links --help   
 ````
 
+## Ejemplos
+
+Ejemplo 1: Verificar los enlaces de un archivo o Markdown
+
+````javascript
+md-links archivo.md
+````
+![links_without_validation](./src/images/without_option.png)
+
+Ejemplo 2: Validar los enlaces de un directorio o archivo Markdown
+
+````javascript
+md-links archivo.md --validate
+````
+
+![links_with_validacion](./src/images/opcion_validate.png)
+
+Ejemplo 3: Obtener estadísticas de un archivo Markdown
+
+````javascript
+md-links archivo.md --stats
+````
+![links_with_statsBasics](./src/images/option_stats.png)
+
+Ejemplo 4: Obtener estadisticas de enlaces rotos
+
+````javascript
+md-links archivo.md --validate --stats
+````
+![links_broken](./src/images/option_validate_stats.png)
+
+## Implementación
+
+En esta sección encontraras información sobre la implementación de la librería para leer enlaces de archivos Markdown.
+
+### Backlog
+
+El backlog de desarrollo se encuentra en Github projects donde podrás encontrar una lista de las tareas planificadas, te invito a vistar el [Backlog de desarrollo](https://github.com/users/MontserratPoblano/projects/1)
+
+### Diagramas de flujo
 
 
+[Diagrama de Flujo para elaboración de API y CLI](https://www.figma.com/file/aUfmXZK5Sq8fTIQApSzN6q/MD-LINKS?type=whiteboard&node-id=0%3A1&t=tDOxSZSGihMsz2jr-1) :Este diagrama muestra los pasos involucrados en la elaboración de la API y la CLI para la extracción, lectura.
+
+- API
+![Diagrama de flujo API](./src/images/API.png)
+- CLI
+![Diagrama de flujo API](./src/images/CLI.png)
+
+## Autor
+
+Este proyecto fue elaborado por Montserrat Poblano
