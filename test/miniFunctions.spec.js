@@ -18,12 +18,12 @@ describe("pathIsAbsolute function", () => {
 describe("pathIsFile function", () => {
 
     it("should return true if path is a file and has .md extension", () => {
-        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\src\\test.md"
+        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\test.md"
         return expect(pathIsFile(pathAbsolute)).resolves.toBe(true);
     })
 
     it("shoud return an error if path is a file but not has .md extension", () => {
-        const pathAbsoluteWithoutMd = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\src\\test.png"
+        const pathAbsoluteWithoutMd = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\test.png"
         // console.log(pathIsFile(pathAbsoluteWithoutMd));
         return pathIsFile(pathAbsoluteWithoutMd).catch((error) => {
             // console.log(data);
@@ -62,7 +62,7 @@ describe("pathIsDirectory function", () => {
 
 describe("readFile function", () => {
     it("should return a html file", () => {
-        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\src\\test.md"
+        const pathAbsolute = "C:\\Users\\Laboratoria\\Desktop\\proyecto4\\DEV006-md-links\\test\\test.md"
         return expect(readFileMd(pathAbsolute)).resolves.toContain('<p>herramienta usando <a href="https://nodejs.org/">Node.js</a></p>')
     })
     it("should return a error if path not exist", () => {

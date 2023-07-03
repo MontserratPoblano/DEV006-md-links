@@ -1,8 +1,8 @@
 {
-  "name": "md-links",
+  "name": "md-links-christianmontserrat",
   "version": "0.1.0",
   "description": "Retrieves links in markdown files,including directories. Provides total,unique and broken links",
-  "main": "./src/index.js",
+  "main": "./bin/cli.js",
   "bin": {
     "md-links": "./bin/cli.js"
   },
