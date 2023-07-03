@@ -66,7 +66,7 @@ program
           })
 
         } else {
-
+          const separate="---------------------------------------------------------------------------------------------------------------"
           result.forEach((link) => {
             if (options && options.validate === true) {
               console.log(` 
@@ -75,16 +75,16 @@ program
           Ok:   ${c.green(link.ok)} 
           status:${c.yellow(link.statusCode)}  
           text: ${c.italic(link.text.substr(0, 50))}
-
-          *************************************************************************************************************
+          ${c.blueBright(separate)}
+          
           `)
             } else if (options && options.validate === false) {
               console.log(` 
           file: ${c.magenta(link.file)} 
           href: ${c.cyan(link.href)} 
           text: ${c.italic(link.text.substr(0, 50))}
-
-          *************************************************************************************************************
+          ${c.blueBright(separate)}
+          
           `)
             }
           })
