@@ -2,7 +2,7 @@
 
 # Introducción :star2:
 
-MD-LINKS es una librería de línea de comando diseñada para facilitar la obtención de enlaces en archivos con extensión markdown, algunas de las características claves de MD-LINKS son las siguientes:
+MD-LINKS es una herramienta de línea de comando diseñada para facilitar la obtención de enlaces en archivos con extensión markdown, algunas de las características claves de MD-LINKS son las siguientes:
 
 -  Obtención de enlaces: MD-LINKS es capaz de identificar y extraer enlaces presentes en archivos con extensión markdown.
 -  Exploración de directorios: analizar directorios en busca de archivos markdown.
